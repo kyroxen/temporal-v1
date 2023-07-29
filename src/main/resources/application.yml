@@ -1,0 +1,27 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: temporal-v1
+  temporal:
+    namespace: default
+    connection:
+      target: 127.0.0.1:7233
+#    workers:
+#      - task-queue: POCOrderProcessingTaskQueue
+#        workflow-classes:
+#          - com.cars24.temporalv1.poc.OrderWorkflowImpl
+#        activity-beans:
+#          - OrderProcess
+#        capacity:
+#          max-concurrent-workflow-task-pollers: 2
+#          max-concurrent-activity-task-pollers: 2
+#        rate-limits:
+#          max-worker-activities-per-second: 2
+#          max-task-queue-activities-per-second: 2
+#    workflow-cache:
+#      max-instances: 3
+#      max-threads: 3
+    workersAutoDiscovery:
+      packages: com.xen.temporalv1
+    start-workers: true
