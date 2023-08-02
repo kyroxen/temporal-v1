@@ -1,9 +1,7 @@
-package com.xen.temporalv1;
+package com.xen.temporalv1.poc;
 
 import com.xen.temporalv1.poc.WorkflowInvoker;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +14,8 @@ public class Controller {
 
     private final WorkflowInvoker workflowInvoker;
 
-    @GetMapping("/{id}")
-    public String triggerWorkflow(@PathVariable String id) {
-        return workflowInvoker.invoke(id);
+    @GetMapping("/{numOfWorkflows}")
+    public String triggerWorkflow(@PathVariable Integer numOfWorkflows) {
+        return workflowInvoker.invoke(numOfWorkflows);
     }
 }

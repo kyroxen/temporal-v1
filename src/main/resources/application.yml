@@ -1,8 +1,12 @@
+server:
+  port: 8084
 spring:
   main:
     allow-bean-definition-overriding: true
   application:
     name: temporal-v1
+
+# Temporal config
   temporal:
     namespace: default
     connection:
@@ -20,8 +24,15 @@ spring:
 #          max-worker-activities-per-second: 2
 #          max-task-queue-activities-per-second: 2
 #    workflow-cache:
-#      max-instances: 3
-#      max-threads: 3
+#      max-instances: 2
+#      max-threads: 2
     workersAutoDiscovery:
       packages: com.xen.temporalv1
     start-workers: true
+
+# Log config
+logging:
+  level:
+    root: INFO
+    com.cars24.cf.external.integration: INFO
+  config: src/main/resources/logback.xml

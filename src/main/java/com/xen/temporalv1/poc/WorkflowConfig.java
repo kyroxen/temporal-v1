@@ -1,18 +1,17 @@
 package com.xen.temporalv1.poc;
 
-import static com.xen.temporalv1.poc.Queues.WORKFLOW_QUEUE;
-
 import com.xen.temporalv1.poc.activity.ActivitiesImpl;
-import com.xen.temporalv1.poc.workflow.WorkflowImpl;
-
+import com.xen.temporalv1.poc.workflow.ParentWorkflowImpl;
 import io.temporal.client.WorkflowClient;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
-
+import io.temporal.worker.WorkerFactoryOptions;
+import io.temporal.worker.WorkerOptions;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static com.xen.temporalv1.poc.Queues.WORKFLOW_QUEUE;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,12 +21,19 @@ public class WorkflowConfig {
 
     @Bean
     public WorkerFactory workerFactory() {
-        WorkerFactory factory = WorkerFactory.newInstance(workflowClient);
-        Worker worker = factory.newWorker(WORKFLOW_QUEUE);
-        worker.registerWorkflowImplementationTypes(WorkflowImpl.class);
+        WorkerFactoryOptions workerFactoryOptions =
+                WorkerFactoryOptions.newBuilder().setMaxWorkflowThreadCount(3).build();
+        WorkerFactory factory = WorkerFactory.newInstance(workflowClient, workerFactoryOptions);
+        Worker worker =
+                factory.newWorker(
+                        WORKFLOW_QUEUE,
+                        WorkerOptions.newBuilder()
+                                .setMaxConcurrentActivityExecutionSize(2)
+                                .setMaxConcurrentWorkflowTaskExecutionSize(2)
+                                .build());
+        worker.registerWorkflowImplementationTypes(ParentWorkflowImpl.class);
         worker.registerActivitiesImplementations(new ActivitiesImpl());
         factory.start();
         return factory;
     }
 }
-

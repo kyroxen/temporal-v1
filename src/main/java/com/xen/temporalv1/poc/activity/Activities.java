@@ -23,9 +23,9 @@ import io.temporal.activity.ActivityInterface;
 
 @ActivityInterface
 public interface Activities {
-    String activityFunction1(String leadId);
+    String activityFunction1(String id);
 
-    String activityFunction2(String startProcessingResult);
+    String activityFunction2(String id, String startProcessingResult);
 
-    String activityFunction3(String processPaymentResult);
+    String activityFunction3(String id, String processPaymentResult);
 }

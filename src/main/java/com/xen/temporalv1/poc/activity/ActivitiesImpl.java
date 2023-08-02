@@ -19,13 +19,11 @@
 
 package com.xen.temporalv1.poc.activity;
 
-import static com.xen.temporalv1.poc.Queues.WORKFLOW_QUEUE;
-
 import io.temporal.spring.boot.ActivityImpl;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Component;
+
+import static com.xen.temporalv1.poc.Queues.WORKFLOW_QUEUE;
 
 @Slf4j
 @Component
@@ -33,27 +31,28 @@ import org.springframework.stereotype.Component;
 public class ActivitiesImpl implements Activities {
 
     @Override
-    public String activityFunction1(String leadId) {
-        sleep(3000);
+    public String activityFunction1(String id) {
+        sleep(500, "activityFunction1: " + id);
         return "activityFunction1 Done! ";
     }
 
     @Override
-    public String activityFunction2(String startProcessingResult) {
-        sleep(2000);
+    public String activityFunction2(String id, String startProcessingResult) {
+        sleep(550, "activityFunction2: " + id);
         return startProcessingResult + "activityFunction2 Done! ";
     }
 
     @Override
-    public String activityFunction3(String processPaymentResult) {
-        sleep(1000);
+    public String activityFunction3(String id, String processPaymentResult) {
+        sleep(600, "activityFunction3: " + id);
         return processPaymentResult + "activityFunction3 Done! ";
     }
 
-    private void sleep(long milliseconds) {
+    private void sleep(long milliseconds, String identifier) {
         try {
             log.info(
-                    "Thread {} Sleeping for {}",
+                    "id {} *** Thread {} *** Sleeping for {}",
+                    identifier,
                     Thread.currentThread().getName(),
                     milliseconds);
             Thread.sleep(milliseconds);
